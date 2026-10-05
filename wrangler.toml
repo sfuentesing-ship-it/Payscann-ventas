@@ -5,3 +5,7 @@ compatibility_date = "2026-10-05"
 [assets]
 directory = "public"
 binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "NAYAX_KV"
+id = "17bdd53030cb4805ba0ef5c25da93384"
