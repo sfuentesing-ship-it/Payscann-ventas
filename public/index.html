@@ -626,9 +626,9 @@ function renderEfectivo(){
 
   document.getElementById('cards-efectivo').innerHTML =
     `<div class="card TOTAL"><h3>Efectivo ${periodo==='hoy'?'hoy':'del mes'}</h3><div class="n">$${mMostrar.toLocaleString('es-CL')}</div></div>` +
-    `<div class="card APPROVED"><h3>Vends en efectivo</h3><div class="n">${vMostrar.toLocaleString('es-CL')}</div></div>` +
+    `<div class="card APPROVED"><h3>Vends en efectivo</h3><div class="n">${vMostrar ? vMostrar.toLocaleString('es-CL') : '—'}</div></div>` +
     `<div class="card" style="border-color:#f59e0b"><h3>Máquinas con efectivo</h3><div class="n">${filas.length.toLocaleString('es-CL')}</div></div>` +
-    `<div class="card" style="border-color:#3b82f6"><h3>Ticket promedio</h3><div class="n">$${prom.toLocaleString('es-CL')}</div></div>`;
+    `<div class="card" style="border-color:#3b82f6"><h3>Ticket promedio</h3><div class="n">${prom ? '$' + prom.toLocaleString('es-CL') : '—'}</div></div>`;
 
   document.getElementById('tbody-efectivo').innerHTML = filas.length ? filas.map((r,i) => {
     const promFila = r.vendsMes ? Math.round(r.mes / r.vendsMes) : 0;
@@ -638,8 +638,8 @@ function renderEfectivo(){
       <td>${r.serial}</td>
       <td>$${r.hoy.toLocaleString('es-CL')}</td>
       <td>$${r.mes.toLocaleString('es-CL')}</td>
-      <td>${r.vendsMes.toLocaleString('es-CL')}</td>
-      <td>$${promFila.toLocaleString('es-CL')}</td>
+      <td>${r.vendsMes ? r.vendsMes.toLocaleString('es-CL') : '—'}</td>
+      <td>${promFila ? '$' + promFila.toLocaleString('es-CL') : '—'}</td>
     </tr>`;
   }).join('') : '<tr><td colspan="7" style="color:#94a3b8">Sin efectivo en el período.</td></tr>';
 
@@ -665,6 +665,7 @@ function render(){
     }
     // Tarjetas por estado (montos del día)
     Object.keys(LAST_DESGLOSE).forEach(k => {
+      if (k === 'APPROVED') return; // tarjeta de aprobados oculta
       const item = LAST_DESGLOSE[k];
       html += `<div class="card ${k}"><h3>${nombres[k]||k}</h3><div class="n">${item.count}</div><div class="m">$${item.monto.toLocaleString('es-CL')}</div></div>`;
     });
