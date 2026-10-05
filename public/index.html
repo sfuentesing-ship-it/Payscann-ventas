@@ -562,7 +562,10 @@ function efectivoDesdePuente(j){
   const hoy = filasEfectivoDesdeRaw(j.hoy);
   const mes = filasEfectivoDesdeRaw(j.mes);
   const sumar = a => a.reduce((s,x) => ({ monto: s.monto + x.c, vends: s.vends + x.v }), { monto: 0, vends: 0 });
-  return { demo:false, fuente:'Nayax Core vía puente (en vivo)', totales:{hoy: sumar(hoy), mes: sumar(mes)}, hoy, mes };
+  // Si el puente entrega totales oficiales (monto + cantidad de vends), usarlos
+  const tHoy = (j.totales && j.totales.hoy) ? j.totales.hoy : sumar(hoy);
+  const tMes = (j.totales && j.totales.mes) ? j.totales.mes : sumar(mes);
+  return { demo:false, fuente:'Nayax Core vía puente (en vivo)', totales:{hoy: tHoy, mes: tMes}, hoy, mes };
 }
 
 async function cargarEfectivo(){
